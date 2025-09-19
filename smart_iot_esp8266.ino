@@ -145,7 +145,7 @@ void setup() {
   if (lcdInitialized) {
     lcdClear();
     lcdSetCursor(0, 0);
-    lcdPrint("Smart IOT App");
+    lcdPrint("Smart IOT APP");
     lcdSetCursor(0, 1);
     lcdPrint("Initializing...");
   }
