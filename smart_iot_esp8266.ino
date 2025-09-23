@@ -118,6 +118,12 @@ const float LOW_HUMIDITY_THRESHOLD = 40;
 unsigned long previousMillis = 0;
 const long interval = 5000;
 
+// SMS THROTTLING VARIABLES
+unsigned long lastTempSMSTime = 0;
+unsigned long lastSoilSMSTime = 0;
+unsigned long lastHumiditySMSTime = 0;
+const unsigned long SMS_THROTTLE_INTERVAL = 180000;  // 3 minutes = 180,000 ms
+
 // Blynk timer
 BlynkTimer timer;
 
@@ -207,7 +213,7 @@ void setup() {
     if (lcdInitialized) {
       lcdClear();
       lcdSetCursor(0, 0);
-      lcdPrint("Connection Failed to Blynk IOT");
+      lcdPrint("Blynk Failed");
       lcdSetCursor(0, 1);
       lcdPrint("Please check the Settings");
       delay(3000);
@@ -218,6 +224,8 @@ void setup() {
   timer.setInterval(10000L, sendSensorData);
   timer.setInterval(5000L, checkThresholds);
   timer.setInterval(1000L, updateLCDDisplay);
+  timer.setInterval(180000L,sendTemperatureSMS);
+  timer.setInterval(180000L,sendSoilMoistureSMS);
   
   digitalWrite(LED_PIN, LOW);
   systemInitialized = true;
@@ -534,7 +542,7 @@ void updateStatusLED() {
 
 
 
-void sendSMS() {
+void sendTemperatureSMS() {
   const char* var1 = "Tempearture level";
   const char* var2 = ([](float t){ static char buf[10]; dtostrf(t, 0, 1, buf); return buf; })(temperature);
   if (WiFi.status() == WL_CONNECTED) {
