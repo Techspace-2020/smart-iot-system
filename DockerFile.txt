@@ -1,3 +1,5 @@
-FROM          europe-west3-docker.pkg.dev/tibco/bwce_2100-ftl_lib_701-bwpluginftl_672-bwplugincon_611-ems_101-psglog_110-bwpluginadb_860:v3
+#FROM tibco/bwce273-ftl673-psg16-ems101-adb850-conf611:1.0      
+FROM          
+europe-west3-docker.pkg.dev/tibco/bwce_2100-ftl_lib_701-bwpluginftl_672-bwplugincon_611-ems_101-psglog_110-bwpluginadb_860:v3
 MAINTAINER Tibco
-ADD    com2crm-itf-in_1.0.0.ear /
+ADD com2crm-itf-in_1.0.0.ear /
